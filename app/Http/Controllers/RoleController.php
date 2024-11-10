@@ -17,8 +17,7 @@ class RoleController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        
+    {       
         
             $roles = Role::with('permissions')->latest()->get();
             return response()->json(['message' => 'All Roles', 'roles' => $roles ]);

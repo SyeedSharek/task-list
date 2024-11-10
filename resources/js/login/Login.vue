@@ -69,7 +69,7 @@ export default {
                     if (token) {
                         localStorage.setItem("authToken", token);
 
-                        this.$router.push({ name: "List" });
+                        this.$router.push({ name: "ProductList" });
                         showToast("Login successfully", "success");
                     } else {
                         console.log("Token is undefined or null");

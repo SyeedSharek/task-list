@@ -8,13 +8,32 @@
                     :key="checkRole.id"
                     class="list-group list-group-flush text-bold"
                 >
+                  
                     <router-link
-                        v-if="checkRole.name === 'task list'"
-                        :to="{ name: 'List' }"
-                        class="list-group-item list-group-item-action list-group-item-dark active"
-                        active-class="active"
-                        >Task List</router-link
-                    >
+                    
+                    v-if="checkRole.name === 'product list'"
+                        :to="{ name: 'ProductList' }"
+                        class="list-group-item list-group-item-action list-group-item-dark "
+                        active-class="active"                      
+
+                    >Product List</router-link>
+
+                    <router-link
+                    
+                    v-if="checkRole.name === 'top order list'"
+                        :to="{ name: 'TopOrder' }"
+                        class="list-group-item list-group-item-action list-group-item-dark "
+                        active-class="active"                      
+
+                    >Top Order List</router-link>
+                    <router-link                   
+                    
+                    v-if="checkRole.name === 'top product list'"
+                        :to="{ name: 'TopSellProduct' }"
+                        class="list-group-item list-group-item-action list-group-item-dark "
+                                             
+
+                    >Top Product List</router-link>
                     <a
                         v-if="checkRole.name === 'dashboard'"
                         href="#"
@@ -26,7 +45,7 @@
                         v-if="checkRole.name === 'permission list'"
                         :to="{ name: 'PermissionList' }"
                         class="list-group-item list-group-item-action list-group-item-dark"
-                        active-class="active"
+                       
                         >Permission List</router-link
                     >
 
@@ -34,7 +53,7 @@
                         v-if="checkRole.name === 'user list'"
                         :to="{ name: 'ListUserRole' }"
                         class="list-group-item list-group-item-action list-group-item-dark"
-                        active-class="active"
+                        
                         >User List</router-link
                     >
                 </div>
@@ -45,7 +64,7 @@
                 <nav class="navbar bg-body-tertiary">
                     <div class="container-fluid">
                         <a href="#" class="navbar-brand"
-                            >Task Management Project</a
+                            >Product Management Project</a
                         >
 
                         <button
@@ -71,11 +90,11 @@ export default {
         return {
             message: "Welcome to the Desh Board!",
             roleWiserPermissions: [],
-            tasks: [],
+            products: [],
         };
     },
     mounted() {
-        this.taskList();
+        this.productList();
         this.RoleWisePermission();
     },
     methods: {
@@ -101,19 +120,18 @@ export default {
                     console.log(error);
                 });
         },
-        taskList() {
+        productList() {
             const token = localStorage.getItem("authToken");
             if (token) {
                 axios
-                    .get("/api/auth/task/index", {
+                    .get("/api/auth/product/products", {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                     })
                     .then((response) => {
-                        console.log(response.data.tasks);
-
-                        this.tasks = response.data.tasks;
+                        console.log(response);
+                        this.products = response.data.data.products || [];
                     })
                     .catch((error) => {
                         console.log("Data Error", error);
@@ -131,7 +149,7 @@ export default {
                         headers: { Authorization: `Bearer ${token}` },
                     })
                     .then((response) => {
-                        console.log(response.data.permissions);
+                        console.log(response.data);
                         this.roleWiserPermissions = response.data.permissions;
                     })
                     .catch((error) => {

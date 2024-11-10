@@ -15,7 +15,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'admin']);
+        $adminRole = Role::create(['name' => 'admin', ]);    
 
         $permissions =[
             ['name'=>'user list'],
@@ -27,7 +27,14 @@ class RolePermissionSeeder extends Seeder
             ['name'=>'edit role'],
             ['name'=>'delete role'],                 
             ['name'=>'permission list'],         
-            ['name'=>'task list'],         
+            ['name'=>'product list'],   
+            ['name'=>'edit product '],   
+            ['name'=>'delete product '],   
+            ['name'=>'top product list'],
+            ['name'=>'top order list'],  
+            ['name'=>'product add']
+
+
 
         ];
 
@@ -35,10 +42,14 @@ class RolePermissionSeeder extends Seeder
             Permission::create($item);
         }
 
-        $role->syncPermissions(Permission::all());
+        $adminRole->syncPermissions(Permission::all());
+
+       
 
         $user = User::first();
-        $user->assignRole($role);
+        if ($user) {
+            $user->assignRole($adminRole);
+        }
         
     }
 }

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SentEmailJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\AppResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -17,35 +20,34 @@ class AuthController extends Controller
         $this->middleware('auth:api',['except'=>['login','register']]);
     }
    
-    public function register(Request $request){
-
-
-        $validation = Validator::make($request->all(),[
-            'name'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|confirmed',
-            'roles'=>'required'
-
+    public function register(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed',
+            'roles' => 'required'
         ]);
-
-
-        if($validation->fails()){
-            return $this->errorResponse('Validation Failed',400,$validation->errors()->toArray());
-
+    
+        if ($validation->fails()) {
+            return $this->errorResponse('Validation Failed', 400, $validation->errors()->toArray());
         }
-
+    
         $user = User::create(array_merge(
             $validation->validated(),
-            ['password'=>bcrypt($request->password)],
-
+            ['password' => bcrypt($request->password)]
         ));
       
         $user->syncRoles($request->roles);
+        
+        // Corrected Log::info() line
+        Log::info('From Request:', ['email' => $request->email]);
+    
+        dispatch(new SentEmailJob((object)$request->all()));
        
-        return $this->successResponse('Register Succesfully Added',200);
-
-
+        return $this->successResponse('Register Successfully Added', 200);
     }
+    
 
     public function login(Request $request){
 

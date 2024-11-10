@@ -40,13 +40,8 @@ Route::post('/register',[AuthController::class,'register']);
 
 
 
-Route::group([
-  'middleware' => ['api', 'permission:user list|create user|edit user|delete user|role list|create role|edit role|delete role'],
-  'prefix' => 'auth'
-], function($router) {  
-
-   
-
+Route::prefix('auth')->group(function() {
+  
     // User Controller 
     Route::controller(UserController::class)->prefix('user')->group(function(){
       Route::get('/index','index');
@@ -71,18 +66,19 @@ Route::group([
     });
 
   
-   
-    // Task Controller     
-
-      Route::controller(TaskController::class)->prefix('task')->group(function(){
- 
-      Route::get('/index','index');
-      Route::post('/store','store');
+   // Product Controller 
+    Route::controller(ProductController::class)->prefix('product')->group(function(){
+      Route::get('/products','index');
+      Route::post('/productAdd','store');
       Route::post('/update/{id}','update');
       Route::delete('/delete/{id}','destroy');
       Route::get('/show/{id}','show');
-      Route::put('/status/{id}','status');
-      Route::get('/search','search');
+      Route::get('/topSellingProduct','topSell');
+      Route::get('/topOrderList','topOrder');
+
+
     });
+
+    
 
 });
