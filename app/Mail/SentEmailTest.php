@@ -30,20 +30,20 @@ class SentEmailTest extends Mailable
     }
 
 
-    public function build()
-    {
-        return $this->view('emails.sentMail')
-                    ->with(['data' => $this->data]);
-    }
+    // public function build()
+    // {
+    //     return $this->view('email.sentMail')
+    //                 ->with(['data' => $this->data]);
+    // }
     /**
      * Get the message content definition.
      */
-    // public function content(): Content
-    // {
-    //     return new Content(
-    //         view: 'email.sentMail',
-    //     );
-    // }
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.sentMail',
+        );
+    }
 
     /**
      * Get the attachments for the message.

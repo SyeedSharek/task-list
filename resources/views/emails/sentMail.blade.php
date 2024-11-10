@@ -7,7 +7,7 @@
     <title>Welcome Email</title>
 </head>
 <body>
-    <h1>Welcome {{$data->name}}</h1>
+    <h1>Welcome</h1>
     
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam esse 
         similique ea labore nam eius? Dolorum officiis cumque ad quas aliquam 
